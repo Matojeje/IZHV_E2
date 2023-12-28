@@ -119,17 +119,17 @@ public class Player : MonoBehaviour
         // Process player input.
         var verticalMovement = Input.GetAxisRaw("Vertical");
         var horizontalMovement = Input.GetAxisRaw("Horizontal");
-        var jumpMovement = Input.GetButtonDown("Jump");
+        var jumpMovement = Input.GetButton("Jump");
         var onGround = IsOnGround();
         
         // Reset gravity switch if we are on the ground.
         mSwitchedGravity &= !onGround;
 
+        // Debug.LogWarning("Jump: " + jumpMovement + " | Ground: " + onGround);
+
         // Impart the initial impulse if we are jumping.
         if (jumpMovement && onGround)
-        { mRB.velocity = -Physics2D.gravity * jumpVelocity;
-            Debug.LogWarning("Jump!");
-        }
+        { mRB.velocity = -Physics2D.gravity * jumpVelocity; }
         
         // Switch gravity with vertical movement.
         if (verticalMovement != 0.0 && !mSwitchedGravity)

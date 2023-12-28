@@ -719,7 +719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpVelocity: 1
-  groundCheckDistance: 0.1
+  groundCheckDistance: 0.2
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 512
