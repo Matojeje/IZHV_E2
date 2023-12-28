@@ -1959,6 +1959,9 @@ MonoBehaviour:
   inactiveOpacity: 0.6
   activeOpacity: 1
   fadeTime: 0.1
+  jumpKey: <SPACE>
+  swapKeyUp: <UP> <W>
+  swapKeyDown: <DOWN> <S>
 --- !u!1 &2031687582
 GameObject:
   m_ObjectHideFlags: 0
