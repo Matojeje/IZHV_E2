@@ -223,8 +223,8 @@ public class Player : MonoBehaviour
             var otherRB = other.gameObject.GetComponent<Rigidbody2D>();
             other.gameObject.layer = LayerMask.NameToLayer("Uncollidable");
             otherRB.velocity = -Physics.gravity;
-            // Loose the game.
-            GameManager.Instance.LooseGame();
+            // Lose the game.
+            GameManager.Instance.LoseGame();
         }
     }
 }

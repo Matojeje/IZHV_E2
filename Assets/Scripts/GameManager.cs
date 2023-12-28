@@ -163,7 +163,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Set the game to the "lost" state.
     /// </summary>
-    public void LooseGame()
+    public void LoseGame()
     {
         // Get the spawner script.
         var sp = spawner.GetComponent<Spawner>();
@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
         sp.spawnObstacles = false;
         // Show the loss text.
         lossText.SetActive(true);
-        // Loose the game.
+        // Lose the game.
         mGameLost = true;
     }
     
