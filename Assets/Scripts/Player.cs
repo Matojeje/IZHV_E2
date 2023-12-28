@@ -98,6 +98,11 @@ public class Player : MonoBehaviour
     /// Current state of gravity: -1.0f for down, +1.0f for up.
     /// </summary>
     public float mCurrentGravity = -1.0f;
+
+    /// <summary>
+    /// If the player hasn't touched an obstacle yet
+    /// </summary>
+    private bool isAlive = true;
     
     /// <summary>
     /// Called before the first frame update.
@@ -124,6 +129,9 @@ public class Player : MonoBehaviour
         
         // Reset gravity switch if we are on the ground.
         mSwitchedGravity &= !onGround;
+
+        // Set player sprite
+        if (isAlive) mSpriteRenderer.sprite = onGround ? spriteNeutral : spritePog;
 
         // Debug.LogWarning("Jump: " + jumpMovement + " | Ground: " + onGround);
 
@@ -206,6 +214,7 @@ public class Player : MonoBehaviour
         
         if (hitObstacle)
         { // If we collide with any obstacle -> end the game.
+            isAlive = false;
             // Update the sprite.
             mSpriteRenderer.sprite = spriteSad; 
             // Move to the uncollidable layer.
