@@ -6,15 +6,22 @@ using UnityEngine.UI;
 
 public class ControlsText : MonoBehaviour
 {
+    [Header("Game object references")]
     public Text jumpText;
     public Text swapText;
     public Player player;
+
+    [Header("Settings")]
+    [Range(0,1)]
     public float inactiveOpacity = 0.6f;
+    [Range(0,1)]
     public float activeOpacity = 1.0f;
     public float fadeTime = 0.1f;
-    private string jumpKey = "<SPACE>";
-    private string swapKeyUp = "<↑>";
-    private string swapKeyDown = "<↓>";
+
+    [Header("Help strings")]
+    public string jumpKey = "<SPACE>";
+    public string swapKeyUp = "<UP> <W>";
+    public string swapKeyDown = "<DOWN> <S>";
 
     // Start is called before the first frame update
     void Start()
