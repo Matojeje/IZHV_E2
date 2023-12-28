@@ -51,6 +51,12 @@ public class Spawner : MonoBehaviour
     public Obstacle obstaclePrefab;
 
     /// <summary>
+    /// Chance to spawn twin obstacles
+    /// </summary>
+    [Range(0, 1)]
+    public float twinObstacleChance = 0.15f;
+
+    /// <summary>
     /// Accumulated time since the game start.
     /// </summary>
     private float elapsedTime = 0.0f;
@@ -85,7 +91,21 @@ public class Spawner : MonoBehaviour
                 spawnAccumulator -= nextSpawnIn;
                 nextSpawnIn = GetNextSpawn();
                 
-                SpawnObstacle();
+                // Only spawn obstacles on the bottom for the first 3 seconds
+                if (elapsedTime <3) {
+                    SpawnObstacle(1);
+                    return;
+                }
+
+                // Rarely spawn an obstacle pair on both sides
+                bool spawnTwins = Random.value <= twinObstacleChance;
+
+                if (spawnTwins) {
+                    // Todo: ensure they spawn at the same X position
+                    SpawnObstacle(-1);
+                    SpawnObstacle(+1);
+                } else SpawnObstacle();
+
             }
         }
     }
@@ -93,14 +113,17 @@ public class Spawner : MonoBehaviour
     /// <summary>
     /// Spawn obstacle if there is enough space.
     /// </summary>
-    public void SpawnObstacle()
+    public void SpawnObstacle(int forcePosition = 0)
     {
         // Spawn the obstacle.
         var obstacle = Instantiate(obstaclePrefab, transform);
         var sizeNow = spawnSize.Evaluate(elapsedTime);
 
         // Move it to the target location.
-        var spawnDown = RandomBool();
+        bool spawnDown;
+        if (forcePosition == 0) spawnDown = RandomBool();
+        else spawnDown = (forcePosition == -1) ? true : false;
+
         obstacle.transform.position += (Vector3)(spawnDown ? 
             spawnOffset + (1.0f - sizeNow) / 2.0f : 
             -spawnOffset - (1.0f - sizeNow) / 2.0f

@@ -1369,6 +1369,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   spawnLayer: Obstacle
   obstaclePrefab: {fileID: 444823138257878673, guid: d9e6dffab2dc3ef4dbf678bf85c63c93, type: 3}
+  twinObstacleChance: 0.15
 --- !u!1 &1213650991
 GameObject:
   m_ObjectHideFlags: 0
