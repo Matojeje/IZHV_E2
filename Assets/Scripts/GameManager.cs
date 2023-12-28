@@ -209,6 +209,7 @@ public class GameManager : MonoBehaviour
         // Save high score.
         var hiScore = Math.Max(mPrevHighScore, mCurrentScore);
         PlayerPrefs.SetFloat("highscore", hiScore);
+        PlayerPrefs.Save();
     }
     
     /// <summary>
