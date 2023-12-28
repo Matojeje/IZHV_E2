@@ -739,7 +739,7 @@ MonoBehaviour:
   spriteHappy: {fileID: 21300000, guid: b951f80b40660794caa62bfbffca39ad, type: 3}
   spriteSad: {fileID: 21300000, guid: 81d68a40d65fa184aae17285ae0fd316, type: 3}
   spritePog: {fileID: 21300000, guid: af5cf6497b5751c458a4ce63692b5557, type: 3}
-  mCurrentGravity: 1
+  mCurrentGravity: -1
 --- !u!1 &721072281
 GameObject:
   m_ObjectHideFlags: 0

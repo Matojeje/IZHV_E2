@@ -30,7 +30,6 @@ public class ControlsText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Gravity: " + player.mCurrentGravity);
         bool isFlipped = player.mCurrentGravity > 0.0f;
         swapText.text = "Swap: " + (isFlipped ? swapKeyDown : swapKeyUp);
 
