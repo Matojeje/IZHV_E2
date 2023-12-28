@@ -127,7 +127,9 @@ public class Player : MonoBehaviour
 
         // Impart the initial impulse if we are jumping.
         if (jumpMovement && onGround)
-        { mRB.velocity = -Physics2D.gravity * jumpVelocity; }
+        { mRB.velocity = -Physics2D.gravity * jumpVelocity;
+            Debug.LogWarning("Jump!");
+        }
         
         // Switch gravity with vertical movement.
         if (verticalMovement != 0.0 && !mSwitchedGravity)
@@ -175,10 +177,21 @@ public class Player : MonoBehaviour
                 mSpriteTransform.rotation, mTargetRotation, 
                 rotationSpeed * Time.fixedDeltaTime
             );
+            
+            // Set the box collider to match the flip rotation
+            // https://www.desmos.com/calculator/gyxow8wqyb
+            double f = Math.Sin((mSpriteTransform.rotation.eulerAngles.x * Math.PI) / 180);
+            double f2 = mBC.size.x * (1 - Math.Abs(f));
+
+            mBC.size = new Vector2(
+                mBC.size.x,
+                Math.Max((float) f2, 0.2f)
+            );
         }
         else
         { // Snap to target rotation once on solid ground.
             mSpriteTransform.rotation = mTargetRotation;
+            mBC.size = new Vector2(mBC.size.x, mBC.size.x);
         }
     }
     
