@@ -18,12 +18,12 @@ public class Spawner : MonoBehaviour
     /// <summary>
     /// Mean frequency of spawning as n per second.
     /// </summary>
-    public float spawnFrequencyMean = 1.0f;
+    public AnimationCurve spawnFrequencyMean;
     
     /// <summary>
     /// Standard deviation of the frequency of spawning as n per second.
     /// </summary>
-    public float spawnFrequencyStd = 0.5f;
+    public AnimationCurve spawnFrequencyStd;
     
     /// <summary>
     /// Position offset of the spawned obstacles.
@@ -33,7 +33,12 @@ public class Spawner : MonoBehaviour
     /// <summary>
     /// Size of the spawned obstacles.
     /// </summary>
-    public float spawnSize = 1.0f;
+    public AnimationCurve spawnSize;
+
+    /// <summary>
+    /// Obstacle speed over time
+    /// </summary>
+    public AnimationCurve obstacleSpeed;
     
     /// <summary>
     /// Layer used for the spawned obstacles.
@@ -43,7 +48,12 @@ public class Spawner : MonoBehaviour
     /// <summary>
     /// Prefab used for the spawned obstacles.
     /// </summary>
-    public GameObject obstaclePrefab;
+    public Obstacle obstaclePrefab;
+
+    /// <summary>
+    /// Accumulated time since the game start.
+    /// </summary>
+    private float elapsedTime = 0.0f;
 
     /// <summary>
     /// Accumulated time since the last spawn in seconds.
@@ -66,13 +76,14 @@ public class Spawner : MonoBehaviour
     /// </summary>
     void Update()
     {
+        elapsedTime += Time.deltaTime;
         if (spawnObstacles)
         { // Check if we should spawn.
             spawnAccumulator += Time.deltaTime;
             if (spawnAccumulator >= nextSpawnIn)
             { // Spawn at most one obstacle per frame.
                 spawnAccumulator -= nextSpawnIn;
-                nextSpawnIn = RandomNormal(spawnFrequencyMean, spawnFrequencyStd);
+                nextSpawnIn = GetNextSpawn();
                 
                 SpawnObstacle();
             }
@@ -86,19 +97,23 @@ public class Spawner : MonoBehaviour
     {
         // Spawn the obstacle.
         var obstacle = Instantiate(obstaclePrefab, transform);
+        var sizeNow = spawnSize.Evaluate(elapsedTime);
 
         // Move it to the target location.
         var spawnDown = RandomBool();
         obstacle.transform.position += (Vector3)(spawnDown ? 
-            spawnOffset + (1.0f - spawnSize) / 2.0f : 
-            -spawnOffset - (1.0f - spawnSize) / 2.0f
+            spawnOffset + (1.0f - sizeNow) / 2.0f : 
+            -spawnOffset - (1.0f - sizeNow) / 2.0f
         );
         
         // Scale it.
-        obstacle.transform.localScale = new Vector3(spawnSize, spawnSize, spawnSize);
+        obstacle.transform.localScale = new Vector3(sizeNow, sizeNow, sizeNow);
+
+        // Set speed
+        obstacle.movementSpeed = obstacleSpeed.Evaluate(elapsedTime);
         
         // Move the obstacle into the correct layer.
-        obstacle.layer = LayerMask.NameToLayer(spawnLayer);
+        obstacle.gameObject.layer = LayerMask.NameToLayer(spawnLayer);
     }
 
     /// <summary>
@@ -121,7 +136,18 @@ public class Spawner : MonoBehaviour
     public void ResetSpawn()
     {
         spawnAccumulator = 0.0f;
-        nextSpawnIn = RandomNormal(spawnFrequencyMean, spawnFrequencyStd);
+        nextSpawnIn = GetNextSpawn();
+    }
+
+    /// <summary>
+    /// Calculate next random spawn time
+    /// </summary>
+    public float GetNextSpawn()
+    {
+        return Math.Max(0.2f, RandomNormal(
+            spawnFrequencyMean.Evaluate(elapsedTime),
+            spawnFrequencyStd.Evaluate(elapsedTime)
+        ));
     }
 
     /// <summary>

@@ -17,7 +17,7 @@ public class Obstacle : MonoBehaviour
     /// <summary>
     /// Movement speed of this obstacle.
     /// </summary>
-    public float movementSpeed = 1.0f;
+    public float movementSpeed = 3.0f;
     
     /// <summary>
     /// Direction of movement.
