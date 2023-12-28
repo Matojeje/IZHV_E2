@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
     /// GameObject used for the score text.
     /// </summary>
     public GameObject scoreText;
+
+    /// <summary>
+    /// GameObject used for the controls text.
+    /// </summary>
+    public GameObject controlsText;
     
     /// <summary>
     /// GameObject representing the main Player character.
@@ -117,6 +122,7 @@ public class GameManager : MonoBehaviour
         { // Setup already started game -> Retry.
             startText.SetActive(false);
             scoreText.SetActive(true);
+            controlsText.SetActive(true);
             lossText.SetActive(false);
         }
         else
@@ -127,6 +133,7 @@ public class GameManager : MonoBehaviour
             // Setup the text.
             startText.SetActive(true);
             scoreText.SetActive(false);
+            controlsText.SetActive(false);
             lossText.SetActive(false);
         }
         

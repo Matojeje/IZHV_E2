@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Current state of gravity - 1.0 for down, -1.0f for up.
     /// </summary>
-    private float mCurrentGravity = 1.0f;
+    public float mCurrentGravity = 1.0f;
     
     /// <summary>
     /// Called before the first frame update.
