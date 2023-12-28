@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// GameObject representing the main Player character.
     /// </summary>
-    public GameObject player;
+    public Player player;
     
     /// <summary>
     /// GameObject representing the spawner.
@@ -56,7 +56,14 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Is the game lost?
     /// </summary>
-    private bool mGameLost = false;
+    [HideInInspector]
+    public bool mGameLost = false;
+
+    /// <summary>
+    /// Are we breaking the high score?
+    /// </summary>
+    [HideInInspector]
+    public bool mHiScoreNow = false;
 
     /// <summary>
     /// Did we start the game?
@@ -116,6 +123,7 @@ public class GameManager : MonoBehaviour
             GetChildNamed(scoreText, "Value").GetComponent<Text>().text = $"{(int)(mCurrentScore)}";
 
             if (mCurrentScore > mPrevHighScore) {
+                mHiScoreNow = true;
                 // Update the high score text.
                 GetChildNamed(hiScoreText, "Value").GetComponent<Text>().text = $"{(int)(mCurrentScore)}";
             }
@@ -157,6 +165,9 @@ public class GameManager : MonoBehaviour
         mPrevHighScore = PlayerPrefs.GetFloat("highscore", 0.1f);
         GetChildNamed(hiScoreText, "Value").GetComponent<Text>().text = $"{(int)(mPrevHighScore)}";
         
+        // Send this instance to linked GameObjects
+        player.gameManager = this;
+
         // Set the state.
         mGameLost = false;
     }

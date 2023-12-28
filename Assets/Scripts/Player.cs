@@ -10,6 +10,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     /// <summary>
+    /// Game manager instance for high score reaction purposes
+    /// </summary>
+    [HideInInspector]
+    public GameManager gameManager;
+
+    /// <summary>
     /// Velocity multiplier applied when jumping.
     /// </summary>
     public float jumpVelocity = 100.0f;
@@ -100,11 +106,6 @@ public class Player : MonoBehaviour
     public float mCurrentGravity = -1.0f;
 
     /// <summary>
-    /// If the player hasn't touched an obstacle yet
-    /// </summary>
-    private bool isAlive = true;
-    
-    /// <summary>
     /// Called before the first frame update.
     /// </summary>
     void Start()
@@ -126,12 +127,13 @@ public class Player : MonoBehaviour
         var horizontalMovement = Input.GetAxisRaw("Horizontal");
         var jumpMovement = Input.GetButton("Jump");
         var onGround = IsOnGround();
-        
+
         // Reset gravity switch if we are on the ground.
         mSwitchedGravity &= !onGround;
 
         // Set player sprite
-        if (isAlive) mSpriteRenderer.sprite = onGround ? spriteNeutral : spritePog;
+        var spriteNormal = gameManager.mHiScoreNow ? spriteHappy : spriteNeutral;
+        if (!gameManager.mGameLost) mSpriteRenderer.sprite = onGround ? spriteNormal : spritePog;
 
         // Debug.LogWarning("Jump: " + jumpMovement + " | Ground: " + onGround);
 
@@ -214,7 +216,6 @@ public class Player : MonoBehaviour
         
         if (hitObstacle)
         { // If we collide with any obstacle -> end the game.
-            isAlive = false;
             // Update the sprite.
             mSpriteRenderer.sprite = spriteSad; 
             // Move to the uncollidable layer.

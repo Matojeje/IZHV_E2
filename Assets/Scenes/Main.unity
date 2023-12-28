@@ -588,8 +588,10 @@ MonoBehaviour:
   scoreText: {fileID: 892753377}
   hiScoreText: {fileID: 1636835613}
   controlsText: {fileID: 1978077207}
-  player: {fileID: 706129582}
+  player: {fileID: 706129586}
   spawner: {fileID: 1047354506}
+  mGameLost: 0
+  mHiScoreNow: 0
 --- !u!4 &535337661
 Transform:
   m_ObjectHideFlags: 0
@@ -801,6 +803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b628077f9296f6240ac3fbf4ea6eafe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 535337660}
   jumpVelocity: 1
   groundCheckDistance: 0.2
   groundLayerMask:
