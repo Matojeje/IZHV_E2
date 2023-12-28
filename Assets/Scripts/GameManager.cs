@@ -24,6 +24,11 @@ public class GameManager : MonoBehaviour
     public GameObject scoreText;
 
     /// <summary>
+    /// GameObject used for the high score text.
+    /// </summary>
+    public GameObject hiScoreText;
+
+    /// <summary>
     /// GameObject used for the controls text.
     /// </summary>
     public GameObject controlsText;
@@ -42,6 +47,11 @@ public class GameManager : MonoBehaviour
     /// Current accumulated score.
     /// </summary>
     private float mCurrentScore = 0.0f;
+
+    /// <summary>
+    /// Previously saved high score
+    /// </summary>
+    private float mPrevHighScore;
 
     /// <summary>
     /// Is the game lost?
@@ -104,6 +114,12 @@ public class GameManager : MonoBehaviour
             mCurrentScore += Time.deltaTime * 10;
             // Update the score text.
             GetChildNamed(scoreText, "Value").GetComponent<Text>().text = $"{(int)(mCurrentScore)}";
+
+            if (mCurrentScore > mPrevHighScore) {
+                // Update the high score text.
+                GetChildNamed(hiScoreText, "Value").GetComponent<Text>().text = $"{(int)(mCurrentScore)}";
+            }
+
         }
     }
 
@@ -136,6 +152,10 @@ public class GameManager : MonoBehaviour
             controlsText.SetActive(false);
             lossText.SetActive(false);
         }
+
+        // Manage high score
+        mPrevHighScore = PlayerPrefs.GetFloat("highscore", 0.1f);
+        GetChildNamed(hiScoreText, "Value").GetComponent<Text>().text = $"{(int)(mPrevHighScore)}";
         
         // Set the state.
         mGameLost = false;
@@ -175,6 +195,9 @@ public class GameManager : MonoBehaviour
         lossText.SetActive(true);
         // Lose the game.
         mGameLost = true;
+        // Save high score.
+        var hiScore = Math.Max(mPrevHighScore, mCurrentScore);
+        PlayerPrefs.SetFloat("highscore", hiScore);
     }
     
     /// <summary>
